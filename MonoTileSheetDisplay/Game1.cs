@@ -19,6 +19,7 @@ namespace MonoTileSheetDisplay
         int tileWidth = 64;
         int tileHeight = 64;
         PlayerWithWeapon player;
+        
         Vector2 ViewportCentre
         {
             get
@@ -56,6 +57,8 @@ namespace MonoTileSheetDisplay
         private Camera cam;
         private TileManager _tManager;
         private SpriteFont _font;
+        HealthBar hbar;
+        
 
         public Game1()
         {
@@ -77,6 +80,10 @@ namespace MonoTileSheetDisplay
                 new Vector2(tileMap.GetLength(1) * tileWidth,
                                 tileMap.GetLength(0) * tileHeight));
             new InputEngine(this);
+
+            hbar = new HealthBar(GraphicsDevice, new Vector2(20, 20));
+            Random r = new Random();
+            hbar.health = r.Next(10, 100);
             base.Initialize();
         }
 
@@ -105,7 +112,7 @@ namespace MonoTileSheetDisplay
             _tManager.ActiveLayer = _tManager.getLayer("background");
             _tManager.ActiveLayer.makeImpassable(impassibleTiles);
             player.CurrentPlayerTile = _tManager.CurrentTile = _tManager.ActiveLayer.Tiles[0, 0];
-            
+            player.setHealthBar(GraphicsDevice);
             
 
             // TODO: use this.Content to load your game content here
@@ -259,6 +266,7 @@ namespace MonoTileSheetDisplay
             debugDraw();
             player.Draw(spriteBatch, _tileSheet);
             enemy.Draw(spriteBatch, _tileSheet);
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -90,6 +90,14 @@ namespace AnimatedSprite
 
         private Vector2 TileBound;
 
+        private HealthBar _playerHealthBar;
+        public int Health = 100;
+
+        public void setHealthBar(GraphicsDevice gdev)
+        {
+            _playerHealthBar = new HealthBar(gdev, this.PixelPosition);
+            _playerHealthBar.health = Health;
+        }
         public PlayerWithWeapon(Vector2 userPosition, Vector2 tileBounds,
             List<TileRef> InitialSheetRefs, 
                 int frameWidth, int frameHeight, float layerDepth)
@@ -204,6 +212,12 @@ namespace AnimatedSprite
             //Site.Update(gameTime);
             // call Sprite Update to get it to animated 
 
+            if (_playerHealthBar != null)
+            {
+                _playerHealthBar.position = PixelPosition;
+                _playerHealthBar.health = Health;
+            }
+
             base.Update(gameTime);
         }
             
@@ -213,7 +227,10 @@ namespace AnimatedSprite
             //Site.Draw(spriteBatch,tx);
             if (MyProjectile != null && MyProjectile.ProjectileState != Projectile.PROJECTILE_STATE.STILL)
                     MyProjectile.Draw(spriteBatch,tx);
-            
+            if (_playerHealthBar != null)
+            {
+                _playerHealthBar.draw(spriteBatch);
+            }
         }
 
     }
